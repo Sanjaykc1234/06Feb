@@ -1,0 +1,44 @@
+name: terraform-pipeline
+trigger: none
+
+pool:
+  name: Vinod  
+
+jobs:
+- job: terraform_all
+  displayName: Terraform Init Plan Apply
+
+  steps:
+  - checkout: self
+
+  - task: TerraformTask@5
+    displayName: Terraform Init
+    inputs:
+      provider: azurerm
+      command: init
+      workingDirectory: '$(System.DefaultWorkingDirectory)'
+      commandOptions: '-reconfigure -upgrade'
+      backendServiceArm: 'selfagent'
+      backendAzureRmResourceGroupName: 'rg-ksanjay'
+      backendAzureRmStorageAccountName: 'stgksanjay'
+      backendAzureRmContainerName: 'contksanjay'
+      backendAzureRmKey: 'self.tfstate'
+
+
+  - task: TerraformTask@5
+    displayName: Terraform Plan
+    inputs:
+      provider: azurerm
+      command: plan
+      workingDirectory: '$(System.DefaultWorkingDirectory)'
+      environmentServiceNameAzureRM: 'selfagent'
+
+
+  - task: TerraformTask@5
+    displayName: Terraform Apply
+    inputs:
+      provider: azurerm
+      command: apply
+      workingDirectory: '$(System.DefaultWorkingDirectory)'
+      environmentServiceNameAzureRM: 'selfagent'
+      commandOptions: '-auto-approve'
