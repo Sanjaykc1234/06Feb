@@ -27,17 +27,15 @@ jobs:
   - task: TerraformTask@5
     displayName: Terraform Plan
     inputs:
-      provider: azurerm
-      command: plan
-      workingDirectory: '$(System.DefaultWorkingDirectory)'
-      environmentServiceNameAzureRM: 'selfagent'
+      provider: 'azurerm'
+      command: 'plan'
+      environmentServiceNameAzureRM: 'vinodsvc'
 
 
   - task: TerraformTask@5
     displayName: Terraform Apply
     inputs:
-      provider: azurerm
-      command: apply
-      workingDirectory: '$(System.DefaultWorkingDirectory)'
-      environmentServiceNameAzureRM: 'selfagent'
+      provider: 'azurerm'
+      command: 'apply'
       commandOptions: '-auto-approve'
+      environmentServiceNameAzureRM: 'vinodsvc'
